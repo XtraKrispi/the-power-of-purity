@@ -50,6 +50,8 @@ highlightTheme: obsidian
     globalValue += 10;
 
     _someService.fireZeMissiles();
+
+    return toReturn;
   }
 ```
 
