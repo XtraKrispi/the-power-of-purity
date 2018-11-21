@@ -1,0 +1,42 @@
+# This is the simple Travis configuration, which is intended for use
+# on applications which do not require cross-platform and
+# multiple-GHC-version support. For more information and other
+# options, see:
+#
+# https://docs.haskellstack.org/en/stable/travis_ci/
+#
+# Copy these contents into the root directory of your Github project in a file
+# named .travis.yml
+
+# Use new container infrastructure to enable caching
+sudo: false
+
+# Do not choose a language; we provide our own build tools.
+language: node_js
+node_js:
+  - "node"
+
+before_install:
+- npm install -g reveal-md
+
+script:
+# Build the package, its tests, and its docs and run the tests
+- reveal-md slides.md --static --static-dirs=images
+
+branches:
+  only:
+  - master
+
+notifications:
+  email:
+    recipients:
+      - XtraKrispi@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always    
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  local-dir: "_site"
+  github_token: $GITHUB_API_KEY # Set in travis-ci.org dashboard   
+  
