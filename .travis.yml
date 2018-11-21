@@ -21,7 +21,7 @@ before_install:
 
 script:
 # Build the package, its tests, and its docs and run the tests
-- reveal-md slides.md --static --static-dirs=images
+- reveal-md slides.md --static=_site --static-dirs=images
 
 branches:
   only:
