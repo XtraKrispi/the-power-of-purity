@@ -1,4 +1,5 @@
 ---
+title: The Power of Purity
 theme: solarized
 highlightTheme: obsidian
 ---
