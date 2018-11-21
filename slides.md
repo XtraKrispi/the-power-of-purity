@@ -6,7 +6,7 @@ highlightTheme: obsidian
 
 # About me
 
-  <img src="images/goldie.JPG" style="margin:0;background:0;border:0;box-shadow:none;" />
+  <img src="images/goldie.jpg" style="margin:0;background:0;border:0;box-shadow:none;" />
   <ul>
     <li>Michael Gold, Lead Software Engineer Analytics</li>
     <li>Work out of Toronto, live in Vaughan, Ontario <div style="text-align: center"><img style="margin:0;background:0;border:0;box-shadow:none;height: 300px;" src="images/wonderland.jpg"></div></li>
@@ -19,7 +19,7 @@ highlightTheme: obsidian
 <ul>
   <li>Two kids, Don (4) and Myles (1.66) and wife Lisa
       <div style="text-align: center">
-        <img style="margin:0;background:0;border:0;box-shadow:none;height: 300px;" src="images/don.JPG"><img style="margin:0;background:0;border:0;box-shadow:none;height:300px;" src="images/myles.JPG">
+        <img style="margin:0;background:0;border:0;box-shadow:none;height: 300px;" src="images/don.jpg"><img style="margin:0;background:0;border:0;box-shadow:none;height:300px;" src="images/myles.jpg">
       </div>
   </li>
   <li>Avid board gamer, video gamer, techology lover</li>
