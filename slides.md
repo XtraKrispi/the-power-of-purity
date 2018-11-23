@@ -298,41 +298,61 @@ Using typeclasses makes it really easy to generalize a function while still dict
 
 ---
 
-# Higher kinded types
 ## Even more abstraction
 
-Haskell allows us to have *higher kinded types*, which are types that themselves take types as arguments.
+<div class="fragment fade-in">
+  Haskell allows us to have *higher kinded types*, which are types that themselves take types as arguments. 
+</div>
 
-Think of *generics* in C# and Java: `List<T>` or `Foo<T>` are types that take another type as an argument.
+<div class="fragment fade-in">
+  Think of C# or Java's generic types
+</div>
 
-In Haskell, the *kind* of a type is denoted almost like a function: 
-  *The *kind* of `Int` is `*`
-  *The *kind* of `[]` is `* -> *`
-
-The `*` basically denotes a type, so list is a type that takes as an argument another type.
+<div class="fragment fade-in">
+  A Haskell type's *kind* is like a function (`*` is a type):
+  <br>
+  <ul>
+    <li class="fragment fade-in">
+      `Int` is `*`
+    </li>
+    <li class="fragment fade-in">
+      `[]` is `* -> *`
+    </li>
+</div>
 
 ----
 
 # Higher kinded types
 
-This is where the similarities end for Haskell and C#/Java generics.
+This is where the similarities end for Haskell and C#/Java generics. <!-- .element: class="fragment fade-in" -->
 
-Haskell allows you to be polymorphic on the higher kinded types as well.  This is not possible in a language like C# or Java.
+Haskell allows you to be polymorphic on the higher kinded types as well.<!-- .element: class="fragment fade-in" -->  
+
+This is not possible in a language like C# or Java.<!-- .element: class="fragment fade-in" -->
 
 ----
 # Higher kinded types
-## Functor
+## An example
 
 ```haskell
   class Functor f where
     fmap :: (a -> b) -> f a -> f b
 ```
 
-Notice that we are defining a typeclass that operates on a higher kinded type (you can tell because of the `f a` and `f b` within `fmap`)
-
-This means that `fmap` is polymorphic not only on the *generic* type, but also the *container* type as well!
-
-This introduces even more possibilities for abstraction, since we no longer need to know what the vessel is for holding the data, or what the data is itself!
+<ul>
+  <li class="fragment fade-in">
+    Notice the `f a` and `f b`
+  </li>
+  <li class="fragment fade-in">
+    `fmap` is polymorphic on three types: `f`, `a`, and `b`!
+  </li>
+  <li class="fragment fade-in">
+    Allows for even more expression in our abstractions
+  </li>
+  <li class="fragment fade-in">
+    Still allows us to reason, because only `fmap` is available for `Functor`
+  </li>
+</ul>
 
 ----
 # Higher kinded types
@@ -357,7 +377,9 @@ Let's take a look at an example:
   foo data = fmap (\mdt -> toString mdt) data  
 ```
 
-Because we are using `Functor` in our function signature, we know that we will be `fmap`ping over the data within it.  We can know this because purity tells us that there's nothing else we can do regarding the polymorphic type.  
+Note: Go through this example, make sure to note syntax and lambdas
+
+And foo
 
 ----
 # Higher kinded types
@@ -380,42 +402,51 @@ These are some ways we can use this function:
   z' = foo z -- z' == Identity "2"
 
 ```
+<div class="fragment fade-in">
+  **Purity allows us to reason about what a function is capable of doing, and polymorphism and higher kinded types allow us to expand the scope of what's capable**
+</div>
 
-Notice how we call the function identically each time?  This is the power of higher kinded types and pure type polymorphism.
-
-Our custom function `foo` doesn't care how it's being called, as long as it's within a functor it just works.
-
-** Purity allows us to reason about what a function is capable of doing, and polymorphism and higher kinded types allow us to expand the scope of what's capable **
-
+Note: Go through the example
 ---
 
 # Purity and Implementation
 
-Purity allows us to make implementing functions easier to reason about as well. Let's implement Functor for Identity
+Purity can make implementations easier to reason about as well! <!-- .element: class="fragment fade-in" -->
 
-```haskell
-  data Identity a = Identity a
+<pre class="fragment fade-in">
+  <code class="lang-haskell">
+    data Identity a = Identity a
 
-  instance Functor Identity where
-    fmap :: (a -> b) -> Identity a -> Identity b
-    fmap = ???
-```
+    instance Functor Identity where
+      fmap :: (a -> b) -> Identity a -> Identity b
+      fmap = ???
+  </code>
+</pre>
+<pre class="fragment fade-in">
+  <code class="lang-haskell">
+    -- There is only one possible implementation here:
+    fmap fn (Identity a) = Identity (fn a) 
+    -- This is the only way the compiler will typecheck
+  </code>
+</pre>
 
-```haskell
-  fmap fn (Identity a) = Identity a -- This is expecting a result of Identity b, so one thing we could try is returning a...
-                -- This doesn't typecheck, since a is of type Identity a, so this implementation is impossible
-
-  -- There is only one possible implementation here:
-  fmap fn (Identity a) = Identity (fn a) -- This is the only way the compiler will typecheck
-```
-
-Since we know nothing about `a` and `b`, we must use the function provided to convert them.
-
-This kind of reasoning about implementations and meaning behind functions is everywhere in Haskell, and allows the developer to focus on 
-logic as opposed to syntax and other useless details.
+<div class="fragment fade-in">
+  Since we know nothing about `a` and `b`, we must use the function provided to convert them.
+</div>
 
 ---
 
+# To conclude
+
+* Purity allows us to more easily reason about what is happening in our code <!-- .element: class="fragment fade-in" -->
+* Don't have to worry about state changing or mutation <!-- .element: class="fragment fade-in" -->
+* Abstractions over types allow us to manipulate data without knowing concrete data types <!-- .element: class="fragment fade-in" -->
+* The more abstracted a function, the easier it is to reason about <!-- .element: class="fragment fade-in" -->
+* Higher kinded types let us abstract this even further <!-- .element: class="fragment fade-in" -->
+
+**Cognitive load is drastically reduced in a purely functional language, because purity and strong typing enforce restrictions on what is possible, and Haskell is the only language out there that does it** <!-- .element: class="fragment fade-in" -->
+
+---
 # Questions?
 
 ---
