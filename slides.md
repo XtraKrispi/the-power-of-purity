@@ -41,7 +41,7 @@ highlightTheme: obsidian
 
 ----
 
-# Does it do what you thought?
+# Think again
 
 ```cs
   public int Increment(int n) {
@@ -59,20 +59,22 @@ highlightTheme: obsidian
 
 # What is purity?
 
-A function is considered pure if it does not alter state outside of the function itself.
-
-This means no global mutation, no side effects, nothing that affects anything but the inputs and the outputs.
-
+A pure function:
+  * Does not alter state <!-- .element: class="fragment" -->
+  * Performs no mutation <!-- .element: class="fragment" -->
+  * Does no side effects <!-- .element: class="fragment" -->
+  * Same input = Same output <!-- .element: class="fragment" -->
+  
 ---
 # Haskell
 
-* Haskell is a purely functional programming language.  
+* Turing complete general purpose purely functional programming language <!-- .element: class="fragment" -->
 
-* Because Haskell is a pure language, there are no such things as side effects, and every function is pure.
+* No side effects, every operation is pure <!-- .element: class="fragment" -->
 
-* Haskell functions are more akin to mathematical functions as opposed to typical functions in most programming languages:
+**For the same input, Haskell will always return the same output** <!-- .element: class="fragment" -->
 
-**For the same input, every single function in Haskell returns the same output.**
+Note: Talk about how side effects are possible, just not in the way you think
 
 ----
 
@@ -80,16 +82,29 @@ This means no global mutation, no side effects, nothing that affects anything bu
 
 ## Some syntax
 
-Functions signatures are declared like this:
+Functions signatures are written like this:
 ```haskell
   add :: Int -> Int -> Int
 ```
 
-This means that `add` *has the type (::)* `Int -> Int -> Int`
+<ul>
+  <li class="fragment fade-in">
+    `::` *has the type*
+  </li>
+  <li class="fragment fade-in">
+    `->` Argument separator
+  </li>
+  <li class="fragment fade-in">
+    Final data type is the return type of the function
+  </li>
+  <li class="fragment fade-in">
+    Functions have *lowercase* names, types must be *uppercase*
+  </li>
+</ul>
+  
+Note:  Explain the different parts of a function signature.
 
-The `->` separates arguments to the function, and the final datatype is the return type of the function.
-
-All functions must start with a lowercase letter, and all datatypes must start with an uppercase.
+Also explain that most of the time function signatures are optional, but are useful documentation
 
 ----
 
@@ -97,34 +112,33 @@ All functions must start with a lowercase letter, and all datatypes must start w
 
 ## Back to our example
 
-In Haskell, the function we saw before looks like this:
+The Haskell version of the function we saw before looks like:
 
 ```haskell
   increment :: Int -> Int
 ```
 
-What does this function do?
-
-We're not really sure the business logic, but we do know that it is impossible for this function
-to alter any state, so our *cognitive load* is drastically reduced.
+<ul>
+  <li class="fragment fade-in">
+    Impossible to alter state, so it can only return an `Int` of some kind
+  </li>
+  <li class="fragment fade-in">
+    *Cognitive load* is drastically reduced because of purity
+  </li>
+</ul>
+  
+Note: Ask "What does this function do?"
 
 ---
 # Type Polymorphism
 
 ## Purity shines
 
-Haskell has polymorphism in types, allowing for more generalized functions to be written.
-
-We denote polymorphic types by using lowercase names within function signatures:
-
+* Type polymorphism means more generalized functions
+* Polymorphic types have lowercase names in type signatures:
+  
 ```haskell
   foo :: a -> a
-```
-
-This is exactly the same as writing:
-
-```haskell
-  foo :: forall a. a -> a
 ```
 
 For **every** type `a` foo is a function that takes an `a` as an argument and returns an `a`
@@ -142,12 +156,24 @@ What does this function do?
 
 # Type Polymorphism
 
-It is **impossible**, because of *functional purity*, for this function to do anything except return its argument.
+This function **must** return its argument
 
 Why?
 
-Since we have no knowledge of what the type of `a` is, and the function works for any type conceivable, the function implementation
-cannot possibly do anything to the datatype, and thus must return it.
+<ul>
+  <li class="fragment fade-in">
+    Don't know what `a` is
+  </li>
+  <li class="fragment fade-in">
+    Function must work for any type
+  </li>
+  <li class="fragment fade-in">
+    Not possible to use the data of `a` in any way
+  </li>
+  <li class="fragment fade-in">
+    Guaranteed because of functional purity
+  </li>
+</ul>
 
 ----
 
@@ -156,50 +182,62 @@ cannot possibly do anything to the datatype, and thus must return it.
 ```haskell
   map :: (a -> b) -> [a] -> [b]
 ```
-
-`map` is a function that itself takes as an argument a function `(a -> b)`, as well as a *list* of `a`
-
-Knowing that list has ways of traversing the list, there is only one thing the function can logically do (there are variations on exactly the logic, but the cognitive overhead is the same).
-
-The only thing this function can do is transform each element using the function provided, since we know nothing about the types of `a` and `b`.
+`map`:
+<ul>
+  <li class="fragment fade-in">
+    Takes a function as an argument, and list of `a`
+  </li>
+  <li class="fragment fade-in">
+    `a` and `b` represent different types
+  </li>
+  <li class="fragment fade-in">
+    The only way to get the return value is by applying the function to the elements of the list
+  </li>
+  <li class="fragment fade-in">
+    Cognitive load is reduced because there's less to think of  
+  </li>
+</ul>
 
 ----
 
 # Type Polymorphism
 
-Abstracting type information away reduces the amount of operations that are possible within a function, making it easier to *reason* about what the function can possibly do.  
-
-Oftentimes, it is unnecessary to look at the implementation of a function when the type signature provides most of the information required.
+* Abstracting types reduces what a function can do <!-- .element: class="fragment fade-in" -->
+* This makes it easier to reason about functions <!-- .element: class="fragment fade-in" -->
+* Sometimes only looking at a function signature is enough to understand basically what's happening <!-- .element: class="fragment fade-in" -->
 
 ---
 
-# Typeclasses
-## Expanding our types
+# Expanding our types
 
-We want to keep functions as general as possible, so we don't have to think about their implementations.
+* Abstracted functions are very limited <!-- .element: class="fragment fade-in" -->
+* Polymorphic types reduce cognitive load <!-- .element: class="fragment fade-in" -->
+* Need a way to get more functionality from polymorphic functions <!-- .element: class="fragment fade-in" -->
 
-This reduces our *cognitive load* and allows us to focus on the logic and flow of an application.
-
-Restricting functions to polymorphic types only gets us so far though, since we have no knowledge about the types at all.
-
-Let's expand that with *typeclasses*
+Enter typeclasses <!-- .element: class="fragment fade-in" -->
 
 ----
 
 # Typeclasses
 
-Typeclasses are a mechanism for classifying types into specific buckets of functionality.
+* A way to classify characteristics of a type <!-- .element: class="fragment fade-in" -->
 
-Let's take a look at the `Eq` typeclass
+<div class="fragment fade-in">
+Example, the `Eq` typeclass: 
+</div>
+<pre class="fragment fade-in">
+  <code class="lang-haskell">
+    class Eq a where
+      (==) :: a -> a -> Bool
+  </code>
+</pre>
 
-```haskell
-  class Eq a where
-    (==) :: a -> a -> Bool
-```
 
-This is saying that the `Eq` typeclass defines an `==` function that takes two arguments of the **same** type (since the two letters are the same), and returns a `Bool`
-
-Any type that implements the `Eq` typeclass can then use the `==` function.
+<ul>
+  <li class="fragment fade-in">
+    Any type that has the classification `Eq` must define an `==` function
+  </li>
+</ul>
 
 ----
 
@@ -210,27 +248,36 @@ Having the idea of a typeclass, let's see it in action:
 ```haskell
   foo :: Eq a => [a] -> [a]
 ```
-
-Notice how we added `Eq a =>`.  This means that now we are saying that `a` must be an instance of `Eq` in order to use this function.
-
-It is not very clear what this function does, but because of the Eq statement, it likely to do some checking between it's elements, either checking equality or non-equality.
-
-Notice that now we've broadened what this function can do by introducing the typeclass constraint.  
-
-But also notice that because we've introduced the constraint, and because Haskell has purity, we know everything that we're capable of doing within
-the function, just by it's type signature.  
-
-We know that **all** we are able to do with the data is compare the elements, and we know that because we have a list we can traverse it.
+<ul>
+  <li class="fragment fade-in">
+    We added `Eq a =>`
+    <ul>
+      <li class="fragment fade-in">
+        `a` must have the `Eq` classification
+      </li>
+    </ul>
+  </li>
+  <li class="fragment fade-in">
+    Broadens the scope of the function, now it can check equality on it's data
+  </li>
+  <li class="fragment fade-in">
+    Cognitive load is still low because we know exactly what the function is capable of doing  
+  </li>
+</ul>
 
 ----
 
 # Typeclasses
 
-## Introducing constraints expands the scope of a function, but it also narrows the types that can call it
+### Introducing constraints expands the scope of a function, but it also narrows the types that can call it <!-- .element: class="fragment fade-in" -->
 
-Only `Eq`s can call this function, and not every type implements `Eq` so the domain of the function is reduced.
+<div class="fragment fade-in">
+  Only `Eq`s can call this function, and not every type implements `Eq` so the domain of the function is reduced.
+</div>
 
-Again, this reduces some more of our *cognitive load*.
+<div class="fragment fade-in">
+  Again, this reduces some more of our *cognitive load*.
+</div>
 
 ----
 
@@ -238,17 +285,16 @@ Again, this reduces some more of our *cognitive load*.
 
 ## Some common typeclasses
 
-Some typeclasses include:
 
-* Show - for converting to a string
-* Read - for parsing from a string
-* Eq - for equality
-* Ord - for ordering
-  * `foo :: Ord a => [a] -> [a]` is likely to do one of two things, sort ascending, or sort descending.
-* Num - for numeric processing, allows for `+, -, *` and others
-  * The more functions a typeclass exposes, the more a function that uses it can do
 
-Using typeclasses makes it really easy to generalize a function while still dictating what can happen within it.
+* Show - for converting to a string <!-- .element: class="fragment fade-in" -->
+* Read - for parsing from a string <!-- .element: class="fragment fade-in" -->
+* Eq - for equality <!-- .element: class="fragment fade-in" -->
+* Ord - for ordering <!-- .element: class="fragment fade-in" -->
+* Num - for numeric processing, allows for +, -, * and others <!-- .element: class="fragment fade-in" -->
+  * The more functions a typeclass exposes, the more a function that uses it can do <!-- .element: class="fragment fade-in" -->
+
+Using typeclasses makes it really easy to generalize a function while still dictating what can happen within it. <!-- .element: class="fragment fade-in" -->
 
 ---
 
