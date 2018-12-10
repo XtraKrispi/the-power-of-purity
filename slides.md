@@ -68,9 +68,11 @@ A pure function:
 ---
 # Haskell
 
-* Turing complete general purpose purely functional programming language <!-- .element: class="fragment" -->
+* Turing complete, general purpose, purely functional programming language <!-- .element: class="fragment" -->
 
 * No side effects, every operation is pure <!-- .element: class="fragment" -->
+
+* Completely immutable, no data mutation is allowed <!-- .element: class="fragment" -->
 
 **For the same input, Haskell will always return the same output** <!-- .element: class="fragment" -->
 
@@ -82,7 +84,7 @@ Note: Talk about how side effects are possible, just not in the way you think
 
 ## Some syntax
 
-Functions signatures are written like this:
+Function signatures are written like this:
 ```haskell
   add :: Int -> Int -> Int
 ```
@@ -112,7 +114,7 @@ Also explain that most of the time function signatures are optional, but are use
 
 ## Back to our example
 
-The Haskell version of the function we saw before looks like:
+The Haskell version of the function we saw at the beginning looks like:
 
 ```haskell
   increment :: Int -> Int
@@ -141,7 +143,7 @@ Note: Ask "What does this function do?"
   foo :: a -> a
 ```
 
-For **every** type `a` foo is a function that takes an `a` as an argument and returns an `a`
+For **every** type `a`, foo is a function that takes an `a` as an argument and returns an `a`
 
 ----
 
@@ -185,7 +187,7 @@ Why?
 `map`:
 <ul>
   <li class="fragment fade-in">
-    Takes a function as an argument, and list of `a`
+    Takes a function as an argument `(a -> b)`, and list of `a`, and returns a list of `b`
   </li>
   <li class="fragment fade-in">
     `a` and `b` represent different types
@@ -204,7 +206,7 @@ Why?
 
 * Abstracting types reduces what a function can do <!-- .element: class="fragment fade-in" -->
 * This makes it easier to reason about functions <!-- .element: class="fragment fade-in" -->
-* Sometimes only looking at a function signature is enough to understand basically what's happening <!-- .element: class="fragment fade-in" -->
+* Sometimes only looking at a function signature is enough to understand what's happening <!-- .element: class="fragment fade-in" -->
 
 ---
 
@@ -269,7 +271,7 @@ Having the idea of a typeclass, let's see it in action:
 
 # Typeclasses
 
-### Introducing constraints expands the scope of a function, but it also narrows the types that can call it <!-- .element: class="fragment fade-in" -->
+** Introducing constraints *expands* the scope of a function, but it also *narrows* the types that can call it ** <!-- .element: class="fragment fade-in" -->
 
 <div class="fragment fade-in">
   Only `Eq`s can call this function, and not every type implements `Eq` so the domain of the function is reduced.
@@ -322,6 +324,25 @@ Using typeclasses makes it really easy to generalize a function while still dict
 
 ----
 
+# Examples of higher kinded types
+
+```haskell
+  data Identity a = Identity a -- Kind is * -> *
+
+  data List a = Cons a (List a) | Nil -- Kind is * -> *
+```
+
+* Both of these data types require a type in order to make it concrete
+* Because of the parameterized type, it makes the data type *higher kinded*
+
+Here is one that has two parameterized types:
+
+```haskell
+  data Either a b = Left a | Right b -- Kind is * -> * -> * 
+``` 
+
+----
+
 # Higher kinded types
 
 This is where the similarities end for Haskell and C#/Java generics. <!-- .element: class="fragment fade-in" -->
@@ -366,20 +387,20 @@ Let's take a look at an example:
                                     -- this means that any data of type Maybe could have two possible states, Just or Nothing
 
   data [a] = (:) a [a] | []         -- this is a rough outline for how lists work in Haskell, they are made of two constructors, cons and empty
+```
 
-  -- ALL OF THE ABOVE ARE INSTANCES OF FUNCTOR
-
+```haskell
   data MyDataType = MyDataType Int  -- this is a custom type that wraps an int
 
-  toString :: MyDataType -> String
+  toString :: MyDataType -> String -- let's create a toString function for our type
 
-  foo :: Functor f => f MyDataType -> f String -- We don't care what the functor is, just that we have a functor
-  foo data = fmap (\mdt -> toString mdt) data  
+  mapToString :: Functor f => f MyDataType -> f String -- We don't care what the functor is, just that we have a functor
+  mapToString data = fmap (\mdt -> toString mdt) data  
 ```
 
 Note: Go through this example, make sure to note syntax and lambdas
 
-And foo
+And mapToString
 
 ----
 # Higher kinded types
