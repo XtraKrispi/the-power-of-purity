@@ -6,11 +6,11 @@ highlightTheme: obsidian
 
 # About me
 
-  <img src="images/goldie-pic.jpg" style="margin:0;background:0;border:0;box-shadow:none;" />
-  <ul>
-    <li>Michael Gold, Lead Software Engineer Analytics</li>
-    <li>Work out of Toronto, live in Vaughan, Ontario <div style="text-align: center"><img style="margin:0;background:0;border:0;box-shadow:none;height: 300px;" src="images/wonderland.jpg"></div></li>
-  </ul>
+<img src="images/goldie-pic.jpg" style="margin:0;background:0;border:0;box-shadow:none;" />
+<ul>
+  <li>Michael Gold, Lead Software Engineer Analytics</li>
+  <li>Work out of Toronto, live in Vaughan, Ontario <div style="text-align: center"><img style="margin:0;background:0;border:0;box-shadow:none;height: 300px;" src="images/wonderland.jpg"></div></li>
+</ul>
     
 ---
 
@@ -434,26 +434,68 @@ Note: Go through the example
 
 Purity can make implementations easier to reason about as well! <!-- .element: class="fragment fade-in" -->
 
-<pre class="fragment fade-in">
-  <code class="lang-haskell">
-    data Identity a = Identity a
+```haskell
+  data Identity a = Identity a
 
-    instance Functor Identity where
-      fmap :: (a -> b) -> Identity a -> Identity b
-      fmap = ???
-  </code>
-</pre>
-<pre class="fragment fade-in">
-  <code class="lang-haskell">
+  instance Functor Identity where
+    fmap :: (a -> b) -> Identity a -> Identity b
+    fmap = ???
+```
+<!-- .element: class="fragment fade-in" -->
+
+
+```haskell
     -- There is only one possible implementation here:
     fmap fn (Identity a) = Identity (fn a) 
     -- This is the only way the compiler will typecheck
-  </code>
-</pre>
+```
+<!-- .element: class="fragment fade-in" -->
 
-<div class="fragment fade-in">
+<p class="fragment fade-in">
   Since we know nothing about `a` and `b`, we must use the function provided to convert them.
-</div>
+</p>
+
+----
+# Purity and Implementation
+
+Knowing the typeclass can make implementations easier as well. <!-- .element: class="fragment fade-in" -->
+
+<p class="fragment fade-in">Take the `void` function:</p>
+
+```haskell
+    void :: Functor f => f a -> f ()
+```
+<!-- .element: class="fragment fade-in" -->
+
+<p class="fragment fade-in">`f` must be a Functor</p>
+
+Since we don't know what f is, there is only one implementation of this function:
+<!-- .element: class="fragment fade-in" -->
+
+```haskell
+  void fa = fmap (\_ -> ()) fa
+```
+<!-- .element: class="fragment fade-in" -->
+
+If we had to implement concrete versions of this for different datatypes, the number of implementations goes up:
+<!-- .element: class="fragment fade-in" -->
+
+```haskell
+  void :: [a] -> [()] -- How do we implement this?
+
+  void as = [()]
+  void as = [(), ()]
+  void as = []
+  void as = [(), (), ()]
+  ... 
+```
+<!-- .element: class="fragment fade-in" -->
+
+For lists, there are an infinite number of possibilities for this implementation.
+<!-- .element: class="fragment fade-in" -->
+
+**Narrowing the types means we don't have to think about as much in terms of implementation**
+<!-- .element: class="fragment fade-in" -->
 
 ---
 
