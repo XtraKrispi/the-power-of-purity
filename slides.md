@@ -17,13 +17,13 @@ highlightTheme: obsidian
 # About me
 
 <ul>
-  <li>Two kids, Don (4) and Myles (1.66) and wife Lisa
+  <li>Two kids, Don (4) and Myles (2) and wife Lisa
       <div style="text-align: center">
         <img style="margin:0;background:0;border:0;box-shadow:none;height: 300px;" src="images/don-pic.jpg"><img style="margin:0;background:0;border:0;box-shadow:none;height:300px;" src="images/myles-pic.jpg">
       </div>
   </li>
-  <li>Avid board gamer, video gamer, techology lover</li>
-  <li>Love functional programming including Haskell, Elm, F#</li>
+  <li>Avid board gamer, video gamer, technology lover</li>
+  <li>Love functional programming including Haskell, Purescript, Elm, F#</li>
 </ul>
 
 ---
@@ -72,7 +72,7 @@ A pure function:
 
 * No side effects, every operation is pure <!-- .element: class="fragment" -->
 
-* Completely immutable, no data mutation is allowed <!-- .element: class="fragment" -->
+* Completely immutable, once a value is set, it can't be changed <!-- .element: class="fragment" -->
 
 **For the same input, Haskell will always return the same output** <!-- .element: class="fragment" -->
 
@@ -91,16 +91,16 @@ Function signatures are written like this:
 
 <ul>
   <li class="fragment fade-in">
-    `::` *has the type*
+    **`::`** *has the type*
   </li>
   <li class="fragment fade-in">
-    `->` Argument separator
+    **`->`** Argument separator
   </li>
   <li class="fragment fade-in">
     Final data type is the return type of the function
   </li>
   <li class="fragment fade-in">
-    Functions have *lowercase* names, types must be *uppercase*
+    Functions must have *lowercase* names, types must be *uppercase*
   </li>
 </ul>
   
@@ -125,7 +125,10 @@ The Haskell version of the function we saw at the beginning looks like:
     Impossible to alter state, so it can only return an `Int` of some kind
   </li>
   <li class="fragment fade-in">
-    *Cognitive load* is drastically reduced because of purity
+    The function is only able to operate on the `Int` argument to produce the `Int` result because of *compiler enforced purity*
+  </li>
+  <li class="fragment fade-in">
+    *Cognitive load* is drastically reduced, there is less to keep in your head when dealing with pure functions
   </li>
 </ul>
   
@@ -142,8 +145,12 @@ Note: Ask "What does this function do?"
 ```haskell
   foo :: a -> a
 ```
+<!-- .element: class="fragment fade-in" -->
 
-For **every** type `a`, foo is a function that takes an `a` as an argument and returns an `a`
+<p>
+  For **every** type `a`, foo is a function that takes an `a` as an argument and returns an `a`
+</p>
+<!-- .element: class="fragment fade-in" -->
 
 ----
 
@@ -158,9 +165,13 @@ What does this function do?
 
 # Type Polymorphism
 
-This function **must** return its argument
+This function has only one possible implementation.
+
+<p>This function **must** return its argument</p>
+<!-- .element: class="fragment fade-in" -->
 
 Why?
+<!-- .element: class="fragment fade-in" -->
 
 <ul>
   <li class="fragment fade-in">
@@ -184,13 +195,20 @@ Why?
 ```haskell
   map :: (a -> b) -> [a] -> [b]
 ```
-`map`:
+<p>`map`:</p>
+<!-- .element: class="fragment fade-in" -->
 <ul>
+  <li class="fragment fade-in">
+    Is called a *higher order function*
+  </li>
   <li class="fragment fade-in">
     Takes a function as an argument `(a -> b)`, and list of `a`, and returns a list of `b`
   </li>
   <li class="fragment fade-in">
-    `a` and `b` represent different types
+    `a` and `b` represent different types (but they don't have to be)
+  </li>
+  <li class="fragment fade-in">
+    We don't know anything about `a` and `b`
   </li>
   <li class="fragment fade-in">
     The only way to get the return value is by applying the function to the elements of the list
@@ -199,6 +217,26 @@ Why?
     Cognitive load is reduced because there's less to think of  
   </li>
 </ul>
+
+----
+
+# Type Polymorphism
+
+Compare that to this implementation:
+
+```haskell
+  map :: (Int -> Int) -> [Int] -> [Int]
+```
+<!-- .element: class="fragment fade-in" -->
+
+<p>This is the exact same function, only operating on `Int`s</p>
+<!-- .element: class="fragment fade-in" -->
+
+<p>Because we can use any `Int` functions, it makes it a lot harder to figure out exactly what is happening inside the function</p>
+<!-- .element: class="fragment fade-in" -->
+
+<p>Cognitive load is increased when we specify types concretely</p>
+<!-- .element: class="fragment fade-in" -->
 
 ----
 
@@ -223,17 +261,24 @@ Enter typeclasses <!-- .element: class="fragment fade-in" -->
 # Typeclasses
 
 * A way to classify characteristics of a type <!-- .element: class="fragment fade-in" -->
-
+* Think of typeclasses as interfaces on steroids <!-- .element: class="fragment fade-in" -->
+  
 <div class="fragment fade-in">
 Example, the `Eq` typeclass: 
 </div>
-<pre class="fragment fade-in">
-  <code class="lang-haskell">
-    class Eq a where
-      (==) :: a -> a -> Bool
-  </code>
-</pre>
 
+<div>
+```haskell
+  class Eq a where
+    (==) :: a -> a -> Bool
+```
+```cs
+  interface Eq<T> {
+    bool Eq(T a, T b);
+  }
+```
+</div>
+<!-- .element: class="fragment fade-in" -->
 
 <ul>
   <li class="fragment fade-in">
@@ -245,11 +290,30 @@ Example, the `Eq` typeclass:
 
 # Typeclasses
 
+* Typeclasses can be inherited from other typeclasses:
+<!-- .element: class="fragment fade-in" -->
+
+```haskell
+  class Eq a => Ord a where
+    compare :: a -> a -> Ordering
+```
+<!-- .element: class="fragment fade-in" -->
+  
+* <p>`Ord` *implies* `Eq`</p>
+<!-- .element: class="fragment fade-in" -->
+* <p>Any type that implements `Ord` **must** also implement `Eq`</p>
+<!-- .element: class="fragment fade-in" -->
+
+----
+
+# Typeclasses
+
 Having the idea of a typeclass, let's see it in action:
 
 ```haskell
   foo :: Eq a => [a] -> [a]
 ```
+
 <ul>
   <li class="fragment fade-in">
     We added `Eq a =>`
@@ -263,7 +327,7 @@ Having the idea of a typeclass, let's see it in action:
     Broadens the scope of the function, now it can check equality on it's data
   </li>
   <li class="fragment fade-in">
-    Cognitive load is still low because we know exactly what the function is capable of doing  
+    Cognitive load is higher, but still low because we know exactly what the function is capable of doing  
   </li>
 </ul>
 
@@ -298,6 +362,14 @@ Having the idea of a typeclass, let's see it in action:
 
 Using typeclasses makes it really easy to generalize a function while still dictating what can happen within it. <!-- .element: class="fragment fade-in" -->
 
+Take a look at this example:
+<!-- .element: class="fragment fade-in" -->
+
+```haskell
+  foo :: (Eq a, Show a) => a -> a -> String
+```
+<!-- .element: class="fragment fade-in" -->
+
 ---
 
 ## Even more abstraction
@@ -326,20 +398,37 @@ Using typeclasses makes it really easy to generalize a function while still dict
 
 # Examples of higher kinded types
 
+<div>
 ```haskell
   data Identity a = Identity a -- Kind is * -> *
 
   data List a = Cons a (List a) | Nil -- Kind is * -> *
 ```
 
+```cs
+  class Identity<T> {}
+  class List<T> {}
+```
+</div>
+<!-- .element: class="fragment fade-in" -->
+
 * Both of these data types require a type in order to make it concrete
-* Because of the parameterized type, it makes the data type *higher kinded*
+<!-- .element: class="fragment fade-in" -->
+* <p>Because of the parameterized type, it makes the data type *higher kinded*</p>
+<!-- .element: class="fragment fade-in" -->
 
 Here is one that has two parameterized types:
+<!-- .element: class="fragment fade-in" -->
 
+<div>
 ```haskell
   data Either a b = Left a | Right b -- Kind is * -> * -> * 
 ``` 
+```cs
+  class Either<T, U> {}
+```
+</div>
+<!-- .element: class="fragment fade-in" -->
 
 ----
 
@@ -381,13 +470,21 @@ This is not possible in a language like C# or Java.<!-- .element: class="fragmen
 Let's take a look at an example:
 
 ```haskell
-  data Identity a = Identity a      -- this is a built in data type that wraps any data
-
-  data Maybe a = Just a | Nothing   -- this is a built in data type that contains two constructors, one that has a value, and one that doesn't
-                                    -- this means that any data of type Maybe could have two possible states, Just or Nothing
-
-  data [a] = (:) a [a] | []         -- this is a rough outline for how lists work in Haskell, they are made of two constructors, cons and empty
+  data Identity a = Identity a                -- this is a built in data type that wraps any data
 ```
+<!-- .element: class="fragment fade-in" -->
+
+```haskell
+  data Maybe a = Just a | Nothing             -- this is a built in data type that contains two constructors, one that has a value, and one that doesn't
+                                              -- this means that any data of type Maybe could have two possible states, Just or Nothing
+```
+<!-- .element: class="fragment fade-in" -->
+
+```haskell
+  data List a = Cons a (List a) | Nil         -- this is a rough outline for how lists work in Haskell, they are made of two constructors, cons and empty
+```
+<!-- .element: class="fragment fade-in" -->
+
 
 ```haskell
   data MyDataType = MyDataType Int  -- this is a custom type that wraps an int
@@ -395,8 +492,9 @@ Let's take a look at an example:
   toString :: MyDataType -> String -- let's create a toString function for our type
 
   mapToString :: Functor f => f MyDataType -> f String -- We don't care what the functor is, just that we have a functor
-  mapToString data = fmap (\mdt -> toString mdt) data  
+  mapToString data = fmap toString data  
 ```
+<!-- .element: class="fragment fade-in" -->
 
 Note: Go through this example, make sure to note syntax and lambdas
 
@@ -473,7 +571,7 @@ Since we don't know what f is, there is only one implementation of this function
 <!-- .element: class="fragment fade-in" -->
 
 ```haskell
-  void fa = fmap (\_ -> ()) fa
+  void fa = fmap (\a -> ()) fa
 ```
 <!-- .element: class="fragment fade-in" -->
 
