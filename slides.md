@@ -2,6 +2,12 @@
 title: The Power of Purity
 theme: solarized
 highlightTheme: obsidian
+revealOptions:
+  width: 100%
+  height: 100%
+  margin: 0
+  minScale: 1
+  maxScale: 1
 ---
 
 # About me
