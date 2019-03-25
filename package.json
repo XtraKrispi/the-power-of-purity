@@ -1,0 +1,23 @@
+{
+  "name": "the-power-of-purity",
+  "version": "1.0.0",
+  "description": "This talk is powered by reveal-md and RevealJS",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf _site",
+    "build": "reveal-md slides.md --static=_site --static-dirs=images"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XtraKrispi/the-power-of-purity.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/XtraKrispi/the-power-of-purity/issues"
+  },
+  "homepage": "https://github.com/XtraKrispi/the-power-of-purity#readme",
+  "dependencies": {
+    "reveal-md": "^3.0.4"
+  }
+}

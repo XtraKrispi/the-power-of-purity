@@ -17,7 +17,7 @@ node_js:
   - "node"
 
 before_install:
-- npm install -g reveal-md
+- npm install
 
 script:
 # Build the package, its tests, and its docs and run the tests
