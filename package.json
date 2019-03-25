@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf _site",
-    "build": "reveal-md slides.md --static=_site --static-dirs=images"
+    "build": "reveal-md slides.md --static=_site --static-dirs=images && cp _site/slides.html _site/index.html"
   },
   "repository": {
     "type": "git",
