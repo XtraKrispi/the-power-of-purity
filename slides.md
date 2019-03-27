@@ -23,7 +23,7 @@ revealOptions:
 # About me
 
 <ul>
-  <li>Two kids, Don (4) and Myles (2) and wife Lisa
+  <li>Two kids, Don (4) and Myles (2), and wife Lisa
       <div style="text-align: center">
         <img style="margin:0;background:0;border:0;box-shadow:none;height: 300px;" src="images/don-pic.jpg"><img style="margin:0;background:0;border:0;box-shadow:none;height:300px;" src="images/myles-pic.jpg">
       </div>
@@ -134,7 +134,7 @@ The Haskell version of the function we saw at the beginning looks like:
     The function is only able to operate on the `Int` argument to produce the `Int` result because of *compiler enforced purity*
   </li>
   <li class="fragment fade-in">
-    *Cognitive load* is drastically reduced, there is less to keep in your head when dealing with pure functions
+    *Cognitive load* is drastically reduced: there is less to keep in your head when dealing with pure functions
   </li>
 </ul>
   
@@ -190,7 +190,7 @@ Why?
     Not possible to use the data of `a` in any way
   </li>
   <li class="fragment fade-in">
-    Guaranteed because of functional purity
+    Guaranteed because of compiler enforced functional purity
   </li>
 </ul>
 
@@ -280,7 +280,7 @@ Example, the `Eq` typeclass:
 ```
 ```cs
   interface Eq<T> {
-    bool Eq(T a, T b);
+    bool Equals(T a, T b);
   }
 ```
 </div>
@@ -296,7 +296,7 @@ Example, the `Eq` typeclass:
 
 # Typeclasses
 
-* Typeclasses can be inherited from other typeclasses:
+* Typeclasses can be "inherited" from other typeclasses:
 <!-- .element: class="fragment fade-in" -->
 
 ```haskell
