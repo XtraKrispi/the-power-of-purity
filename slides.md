@@ -205,7 +205,7 @@ Why?
 <!-- .element: class="fragment fade-in" -->
 <ul>
   <li class="fragment fade-in">
-    Is called a *higher order function*
+    Is called a ***higher order*** function
   </li>
   <li class="fragment fade-in">
     Takes a function as an argument `(a -> b)`, and list of `a`, and returns a list of `b`
@@ -274,10 +274,14 @@ Example, the `Eq` typeclass:
 </div>
 
 <div>
+Haskell:
+
 ```haskell
   class Eq a where
     (==) :: a -> a -> Bool
 ```
+C#:
+
 ```cs
   interface Eq<T> {
     bool Equals(T a, T b);
@@ -372,17 +376,22 @@ Take a look at this example:
 <!-- .element: class="fragment fade-in" -->
 
 ```haskell
-  foo :: (Eq a, Show a) => a -> a -> String
+  foo :: (Eq a, Show b) => [a] -> b -> String
 ```
+<!-- .element: class="fragment fade-in" -->
+
+<p>**`a`** and **`b`** are different types, one has **`Eq`** and one has **`Show`**, so we know exactly what the function is able to do with the data!</p>
 <!-- .element: class="fragment fade-in" -->
 
 ---
 
 ## Even more abstraction
 
-<div class="fragment fade-in">
-  Haskell allows us to have *higher kinded types*, which are types that themselves take types as arguments. 
-</div>
+<p>Haskell allows us to have *higher kinded types*, which are types that themselves take types as arguments.</p>
+<!-- .element: class="fragment fade-in" -->
+
+<p>Think of higher order functions (functions that take other functions as arguments, remember `map`)</p>
+<!-- .element: class="fragment fade-in" -->
 
 <div class="fragment fade-in">
   Think of C# or Java's generic types
@@ -405,11 +414,14 @@ Take a look at this example:
 # Examples of higher kinded types
 
 <div>
+Haskell:
+
 ```haskell
   data Identity a = Identity a -- Kind is * -> *
 
   data List a = Cons a (List a) | Nil -- Kind is * -> *
 ```
+C#:
 
 ```cs
   class Identity<T> {}
@@ -427,9 +439,14 @@ Here is one that has two parameterized types:
 <!-- .element: class="fragment fade-in" -->
 
 <div>
+Haskell:
+
 ```haskell
   data Either a b = Left a | Right b -- Kind is * -> * -> * 
 ``` 
+
+C#:
+
 ```cs
   class Either<T, U> {}
 ```
