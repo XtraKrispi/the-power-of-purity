@@ -474,16 +474,16 @@ This is not possible in a language like C# or Java.<!-- .element: class="fragmen
 
 <ul>
   <li class="fragment fade-in">
-    Notice the `f a` and `f b`
+    Notice the **`f a`** and **`f b`**
   </li>
   <li class="fragment fade-in">
-    `fmap` is polymorphic on three types: `f`, `a`, and `b`!
+    **`fmap`** is polymorphic on three types: **`f`**, **`a`**, and **`b`**!
   </li>
   <li class="fragment fade-in">
     Allows for even more expression in our abstractions
   </li>
   <li class="fragment fade-in">
-    Still allows us to reason, because only `fmap` is available for `Functor`
+    Still allows us to reason, **`fmap`** is the only function available to **`Functor`**
   </li>
 </ul>
 
